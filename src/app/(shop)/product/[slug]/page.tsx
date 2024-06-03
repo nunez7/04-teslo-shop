@@ -1,4 +1,4 @@
-import { ProductSlideShow, QuantitySelector, SizeSelector } from "@/components";
+import { ProducMobiletSlideShow, ProductSlideShow, QuantitySelector, SizeSelector } from "@/components";
 import { titleFont } from "@/config/fonts";
 import { initialData } from "@/seed/seed";
 import { notFound } from "next/navigation";
@@ -24,7 +24,16 @@ export default function ProductPage({ params }: Props) {
 
       {/*Slideshow */}
       <div className="col-span-1 md:col-span-2">
-        <ProductSlideShow images={product.images} title={product.title} />
+
+        {/*Desckop Slideshow */}
+        <ProductSlideShow images={product.images} title={product.title} 
+        className="hidden md:block"
+        />
+
+        {/*Mobil Slideshow */}
+        <ProducMobiletSlideShow images={product.images} title={product.title}
+        className="block md:hidden" 
+        />
       </div>
 
       {/*Detalles */}
