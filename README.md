@@ -19,4 +19,5 @@ https://www.prisma.io/docs/getting-started
 npm install prisma --save-dev
 npx prisma init --datasource-provider PostgreSQL
 npx prisma migrate dev --name init
+npx prisma generate
 ```
