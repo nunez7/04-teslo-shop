@@ -2,6 +2,7 @@ export const revalidate = 604800; //7 días
 
 import { getProductBySlug } from "@/actions";
 import { ProducMobiletSlideShow, ProductSlideShow, QuantitySelector, SizeSelector } from "@/components";
+import { StockLabel } from "@/components/product/stock-label/StockLabel";
 import { titleFont } from "@/config/fonts";
 import { notFound } from "next/navigation";
 
@@ -40,6 +41,7 @@ export default async function ProductPage({ params }: Props) {
 
       {/*Detalles */}
       <div className="col-span-1 px-5">
+        <StockLabel slug={slug} />
         <h1 className={`${titleFont.className} antialiased font-bold text-xl`}>{product.title}</h1>
         <p className="text-lg mb-5">${product.price.toFixed(2)}</p>
 
