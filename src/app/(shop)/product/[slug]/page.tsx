@@ -1,6 +1,8 @@
+export const revalidate = 604800; //7 días
+
+import { getProductBySlug } from "@/actions";
 import { ProducMobiletSlideShow, ProductSlideShow, QuantitySelector, SizeSelector } from "@/components";
 import { titleFont } from "@/config/fonts";
-import { initialData } from "@/seed/seed";
 import { notFound } from "next/navigation";
 
 interface Props {
@@ -10,10 +12,10 @@ interface Props {
 }
 
 
-export default function ProductPage({ params }: Props) {
+export default async function ProductPage({ params }: Props) {
 
   const { slug } = params;
-  const product = initialData.products.find(product => product.slug == slug);
+  const product = await getProductBySlug(slug);
 
   if (!product) {
     notFound();
@@ -26,13 +28,13 @@ export default function ProductPage({ params }: Props) {
       <div className="col-span-1 md:col-span-2">
 
         {/*Desckop Slideshow */}
-        <ProductSlideShow images={product.images} title={product.title} 
-        className="hidden md:block"
+        <ProductSlideShow images={product.images} title={product.title}
+          className="hidden md:block"
         />
 
         {/*Mobil Slideshow */}
         <ProducMobiletSlideShow images={product.images} title={product.title}
-        className="block md:hidden" 
+          className="block md:hidden"
         />
       </div>
 
