@@ -7,7 +7,6 @@
 .yarn/install-state.gz
 
 #DB
-/prisma
 /postgres
 
 # testing
