@@ -1,5 +1,7 @@
+export const revalidate = 60;
 import { getPaginatedProductsWithImages } from "@/actions";
 import { Pagination, ProductGrid, Title } from "@/components";
+import { Product } from "@/interfaces";
 import { notFound, redirect } from "next/navigation";
 
 interface Props{
@@ -40,7 +42,7 @@ export default async function CategoryPage({params, searchParams}: Props) {
       <Title title={`Articulos de ${labels[gender]}`} subTitle={`Productos ${labels[gender]}`} className="mb-2"/>
 
       <ProductGrid 
-        products={ products }
+        products={ products as Product[] }
       />
 
      <Pagination totalPages={totalPages} />
