@@ -9,7 +9,7 @@ export async function authenticate(
     formData: FormData,
 ) {
     try {
-        console.log(Object.fromEntries(formData));
+        //console.log(Object.fromEntries(formData));
         await signIn('credentials', formData);
     } catch (error) {
         if (error instanceof AuthError) {
