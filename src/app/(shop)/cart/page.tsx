@@ -1,8 +1,9 @@
-import { QuantitySelector, Title } from "@/components";
+import { Title } from "@/components";
 import { initialData } from "@/seed/seed";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { ProductsInCart } from "./ui/ProductsInCart";
 
 const productsInCart = [
   initialData.products[0],
@@ -27,30 +28,8 @@ export default function CartPage() {
             <span className="text-xl">Agregar más productos</span>
             <Link href="/" className="underline mb-5">Continúa comprando</Link>
 
-          {/*Items */}
-          {
-            productsInCart.map(product => (
-              <div key={product.slug} className="flex mb-5">
-                <Image
-                  src={`/products/${product.images[0]}`}
-                  width={100}
-                  height={100}
-                  style={{
-                    width: '100px',
-                    height: '100px'
-                  }}
-                  alt={product.title}
-                  className="mr-5 rounded"
-                />
-                <div>
-                  <p>{product.title}</p>
-                  <p>${product.price.toFixed(2)}</p>
-                  <QuantitySelector quantity={5}  />
-                  <button className="underline mt-3">Remover</button>
-                </div>
-              </div>
-            ))
-          }
+            {/*Items */}
+            <ProductsInCart />
           </div>
 
           {/*Checkout */}
@@ -71,9 +50,9 @@ export default function CartPage() {
             </div>
 
             <div className="mt-5 mb-2 w-full">
-              <Link 
-              className="flex btn-primary justify-center"
-              href="/checkout/address">Verificación (checkout)</Link>
+              <Link
+                className="flex btn-primary justify-center"
+                href="/checkout/address">Verificación (checkout)</Link>
             </div>
           </div>
         </div>
