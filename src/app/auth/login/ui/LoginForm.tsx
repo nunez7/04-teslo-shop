@@ -3,12 +3,21 @@
 import { authenticate } from '@/actions';
 import clsx from 'clsx';
 import Link from 'next/link';
-import React from 'react';
+import { useRouter } from 'next/navigation';
+import React, { useEffect } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
 import { IoInformationOutline } from 'react-icons/io5';
 
 export const LoginForm = () => {
     const [state, dispatch] = useFormState(authenticate, undefined);
+    const router = useRouter();
+
+    //Usamos el useEfect para redireccionar
+    useEffect(() =>{
+        if(state == 'Success'){
+            router.replace('/');
+        }
+    }, [state]);
 
     return (
         <form action={dispatch} className="flex flex-col">
@@ -29,7 +38,7 @@ export const LoginForm = () => {
                 aria-live="polite"
                 aria-atomic="true"
             >
-                {state && (
+                {(state && state !=="Success" ) && (
                     <div className='flex flex-row mb-2'>
                         <IoInformationOutline className="h-5 w-5 text-red-500" />
                         <p className="text-sm text-red-500">{state}</p>

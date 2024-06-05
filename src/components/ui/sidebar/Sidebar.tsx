@@ -25,9 +25,9 @@ export const Sidebar = () => {
             {/* Blur */}
             {
                 isSideMenuOpen && (
-                    <div 
-                    onClick={closeMenu}
-                    className="fade-in fixed top-0 left-0 w-screen h-screen z-10 backdrop-filter backdrop-blur-sm" />
+                    <div
+                        onClick={() => closeMenu()}
+                        className="fade-in fixed top-0 left-0 w-screen h-screen z-10 backdrop-filter backdrop-blur-sm" />
                 )
             }
 
@@ -45,7 +45,7 @@ export const Sidebar = () => {
                 <IoCloseOutline
                     size={50}
                     className='absolute top-5 right-5 cursor-pointer'
-                    onClick={closeMenu}
+                    onClick={() => closeMenu()}
                 />
                 {/* Input */}
                 <div className='relative mt-14'>
@@ -59,7 +59,7 @@ export const Sidebar = () => {
                 {/* Menú opciones */}
                 <Link
                     href="/profile"
-                    onClick={closeMenu}
+                    onClick={() => closeMenu()}
                     className='flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all'
                 >
                     <IoPersonOutline size={30} />
@@ -75,7 +75,8 @@ export const Sidebar = () => {
                 </Link>
 
                 <Link
-                    href="/signin"
+                    href="/auth/login"
+                    onClick={() => closeMenu()}
                     className='flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all'
                 >
                     <IoLogInOutline size={30} />
@@ -83,11 +84,11 @@ export const Sidebar = () => {
                 </Link>
 
                 <button
-                onClick={() => logout()}
-                    className='flex w-full items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all'
+                    className="flex w-full items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
+                    onClick={() => {logout(); closeMenu();}}
                 >
                     <IoLogOutOutline size={30} />
-                    <span className='ml-4 text-xl'>Salir</span>
+                    <span className="ml-3 text-xl">Salir</span>
                 </button>
                 {/* Line separator */}
                 <div className='w-full h-px bg-gray-200 my-10' />
