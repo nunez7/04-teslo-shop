@@ -1,6 +1,6 @@
 'use client';
 import { QuantitySelector } from '@/components';
-import { useCartStore } from '@/components/store';
+import { useCartStore } from '@/store';
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';

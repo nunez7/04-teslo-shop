@@ -1,8 +1,8 @@
 'use client';
 
 import {useEffect, useState} from 'react';
-import { useCartStore } from '@/components/store';
-import { useUIStore } from '@/components/store/ui/ui-store';
+import { useCartStore } from '@/store';
+import { useUIStore } from '@/store/ui/ui-store';
 import { titleFont } from '@/config/fonts';
 import Link from 'next/link';
 import React from 'react';

@@ -1,6 +1,6 @@
 'use client';
 
-import { useUIStore } from '@/components/store';
+import { useUIStore } from '@/store';
 import clsx from 'clsx';
 import Link from 'next/link';
 import React from 'react';
