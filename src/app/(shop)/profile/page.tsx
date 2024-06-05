@@ -22,7 +22,8 @@ export default async function NamePage() {
                     height={200}
                     src="https://avatars.githubusercontent.com/u/67946056?v=4" alt="" />
                         <div className="text-center mt-2 text-3xl font-medium">{session.user.name}</div>
-                        <div className="text-center mt-2 font-light text-sm">{session.user.email}</div>
+                        <div className="text-center mt-2 font-light text-sm">Rol: {session.user.role}</div>
+                        <div className="text-center mt-2 font-light text-sm">Email: {session.user.email}</div>
                         <div className="px-6 text-center mt-2 font-light text-sm">
                             <p>
                                 {JSON.stringify(session.user, null, 2)}
