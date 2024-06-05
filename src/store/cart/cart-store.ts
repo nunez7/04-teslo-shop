@@ -8,9 +8,16 @@ interface State {
 
     getTotalItems: () => number;
 
+    getSumaryInformation: () => {
+        subTotal: number;
+        tax: number;
+        total: number;
+        itemsInCart: number;
+    };
+
     addProductTocart: (product: CartProduct) => void;
 
-    updateProductQuantity:  (product: CartProduct, quantity: number) => void;
+    updateProductQuantity: (product: CartProduct, quantity: number) => void;
 
     removeProduct: (product: CartProduct) => void;
 }
@@ -22,21 +29,36 @@ export const useCartStore = create<State>()(
             cart: [],
 
             //Methods
-            removeProduct: (product: CartProduct) =>{
-                const {cart} = get();
+            getSumaryInformation: () => {
+                const { cart } = get();
+
+                const subTotal = cart.reduce(
+                    (subTotal, product) => (product.quantity * product.price) + subTotal,
+                    0);
+
+                const tax = subTotal * 0.16;
+                const total = subTotal + tax;
+                const itemsInCart = cart.reduce((total, item) => total + item.quantity, 0);
+
+                return {
+                    subTotal, tax, total, itemsInCart
+                }
+            },
+            removeProduct: (product: CartProduct) => {
+                const { cart } = get();
                 //Traemos los productos que no coincidad con el id y la talla
                 const updatedCartProducts = cart.filter(
                     (item) => item.id !== product.id || item.size !== product.size
                 );
                 set({ cart: updatedCartProducts });
             },
-            updateProductQuantity: (product: CartProduct, quantity: number) =>{
-                const {cart} = get();
+            updateProductQuantity: (product: CartProduct, quantity: number) => {
+                const { cart } = get();
 
                 //Se que el producto existe por talla, debo incrementar la cantidad
                 const updatedCartProducts = cart.map((item) => {
                     if (item.id === product.id && item.size === product.size) {
-                        return { ...item, quantity: quantity}
+                        return { ...item, quantity: quantity }
                     }
                     return item;
                 });
@@ -44,8 +66,8 @@ export const useCartStore = create<State>()(
                 set({ cart: updatedCartProducts });
 
             },
-            getTotalItems: () =>{
-                const {cart} = get();
+            getTotalItems: () => {
+                const { cart } = get();
                 return cart.reduce((total, item) => total + item.quantity, 0);
             },
             addProductTocart: (product: CartProduct) => {
