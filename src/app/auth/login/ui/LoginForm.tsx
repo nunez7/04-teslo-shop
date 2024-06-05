@@ -3,19 +3,20 @@
 import { authenticate } from '@/actions';
 import clsx from 'clsx';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+//import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
 import { IoInformationOutline } from 'react-icons/io5';
 
 export const LoginForm = () => {
     const [state, dispatch] = useFormState(authenticate, undefined);
-    const router = useRouter();
+    //const router = useRouter();
 
     //Usamos el useEfect para redireccionar
     useEffect(() =>{
         if(state == 'Success'){
-            router.replace('/');
+            //router.replace('/');
+            window.location.replace("/");
         }
     }, [state]);
 
