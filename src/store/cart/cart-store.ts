@@ -10,7 +10,7 @@ interface State {
 
     addProductTocart: (product: CartProduct) => void;
 
-    //updateProductQuantity
+    updateProductQuantity:  (product: CartProduct, quantity: number) => void;
 
     //removeProduct
 }
@@ -22,6 +22,20 @@ export const useCartStore = create<State>()(
             cart: [],
 
             //Methods
+            updateProductQuantity: (product: CartProduct, quantity: number) =>{
+                const {cart} = get();
+
+                //Se que el producto existe por talla, debo incrementar la cantidad
+                const updatedCartProducts = cart.map((item) => {
+                    if (item.id === product.id && item.size === product.size) {
+                        return { ...item, quantity: quantity}
+                    }
+                    return item;
+                });
+
+                set({ cart: updatedCartProducts });
+
+            },
             getTotalItems: () =>{
                 const {cart} = get();
                 return cart.reduce((total, item) => total + item.quantity, 0);
