@@ -1,12 +1,14 @@
 'use client';
 
+import React, { useEffect } from 'react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import clsx from 'clsx';
+
 import { deleteUserAddress, setUserAddress } from '@/actions';
 import { Address, Country } from '@/interfaces';
 import { useAddressStore } from '@/store';
-import clsx from 'clsx';
-import { useSession } from 'next-auth/react';
-import React, { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
 
 type FormInputs = {
     firstName: string;
@@ -28,6 +30,8 @@ interface Props {
 
 export const AddressForm = ({ countries, userStoredAddress = {} }: Props) => {
 
+    const router = useRouter();
+
     const { handleSubmit, register, formState: { isValid }, reset } = useForm<FormInputs>({
         defaultValues: {
             //TODO: leer de la BD
@@ -48,17 +52,19 @@ export const AddressForm = ({ countries, userStoredAddress = {} }: Props) => {
         }
     }, [address]);
 
-    const onSubmit = (data: FormInputs) => {
+    const onSubmit = async(data: FormInputs) => {
         console.log({ data });
         setAddress(data);
 
         const {remenberAddress, ...rest} = data;
 
         if(remenberAddress){
-            setUserAddress(rest, session!.user.id);
+            await setUserAddress(rest, session!.user.id);
         }else{
-            deleteUserAddress(session!.user.id);
+            await deleteUserAddress(session!.user.id);
         }
+
+        router.push("/checkout");
     }
 
 
