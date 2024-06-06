@@ -1,8 +1,10 @@
 'use client';
 
+import { deleteUserAddress, setUserAddress } from '@/actions';
 import { Country } from '@/interfaces';
 import { useAddressStore } from '@/store';
 import clsx from 'clsx';
+import { useSession } from 'next-auth/react';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -30,6 +32,9 @@ export const AddressForm = ({ countries }: Props) => {
 
         }
     });
+    //Obtendremos el userId
+    const {data: session} = useSession({required: true});
+
     //El storage configurado
     const setAddress = useAddressStore(state => state.setAddress);
     const address = useAddressStore(state => state.address);
@@ -43,6 +48,14 @@ export const AddressForm = ({ countries }: Props) => {
     const onSubmit = (data: FormInputs) => {
         console.log({ data });
         setAddress(data);
+
+        const {remenberAddress, ...rest} = data;
+
+        if(remenberAddress){
+            setUserAddress(rest, session!.user.id);
+        }else{
+            deleteUserAddress(session!.user.id);
+        }
     }
 
 
