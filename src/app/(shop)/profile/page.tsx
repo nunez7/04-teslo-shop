@@ -3,7 +3,7 @@ import { Title } from "@/components";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 
-export default async function NamePage() {
+export default async function PerfilPage() {
 
     const session = await auth();
 
