@@ -17,12 +17,12 @@ export const Sidebar = () => {
 
     const isAthenticated = !!session?.user;
 
-    console.log("Autenticado_", isAthenticated);
-    
+    const isAdmin = session?.user.role === "admin";
+
     //Fix para cerrar sesión
-    const cerrarSesion = () =>{
-        logout(); 
-        closeMenu(); 
+    const cerrarSesion = () => {
+        logout();
+        closeMenu();
         window.location.replace("/");
     }
     return (
@@ -67,26 +67,32 @@ export const Sidebar = () => {
                 </div>
 
                 {/* Menú opciones */}
-                <Link
-                    href="/profile"
-                    onClick={() => closeMenu()}
-                    className='flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all'
-                >
-                    <IoPersonOutline size={30} />
-                    <span className='ml-4 text-xl'>Perfil</span>
-                </Link>
+                {
+                    isAthenticated && (
+                        <>
+                            <Link
+                                href="/profile"
+                                onClick={() => closeMenu()}
+                                className='flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all'
+                            >
+                                <IoPersonOutline size={30} />
+                                <span className='ml-4 text-xl'>Perfil</span>
+                            </Link>
 
-                <Link
-                    href="/orders"
-                    className='flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all'
-                >
-                    <IoTicketOutline size={30} />
-                    <span className='ml-4 text-xl'>Ordenes</span>
-                </Link>
+                            <Link
+                                href="/orders"
+                                className='flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all'
+                            >
+                                <IoTicketOutline size={30} />
+                                <span className='ml-4 text-xl'>Ordenes</span>
+                            </Link>
+                        </>
+                    )
+                }
                 {
                     isAthenticated && (
                         <Link
-                        href="/"
+                            href="/"
                             className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
                             onClick={() => cerrarSesion()}
                         >
@@ -96,43 +102,44 @@ export const Sidebar = () => {
                     )
                 }
                 {!isAthenticated && (
-                        <Link
-                            href="/auth/login"
-                            onClick={() => closeMenu()}
-                            className='flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all'
-                        >
-                            <IoLogInOutline size={30} />
-                            <span className='ml-4 text-xl'>Ingresar</span>
-                        </Link>
-                    )
+                    <Link
+                        href="/auth/login"
+                        onClick={() => closeMenu()}
+                        className='flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all'
+                    >
+                        <IoLogInOutline size={30} />
+                        <span className='ml-4 text-xl'>Ingresar</span>
+                    </Link>
+                )
                 }
 
                 {/* Line separator */}
-                <div className='w-full h-px bg-gray-200 my-10' />
+                {
+                    isAdmin && (
 
-                <Link
-                    href="/products"
-                    className='flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all'
-                >
-                    <IoShirtOutline size={30} />
-                    <span className='ml-4 text-xl'>Productos</span>
-                </Link>
-
-                <Link
-                    href="/orders"
-                    className='flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all'
-                >
-                    <IoTicketOutline size={30} />
-                    <span className='ml-4 text-xl'>Ordenes</span>
-                </Link>
-
-                <Link
-                    href="/users"
-                    className='flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all'
-                >
-                    <IoPeopleOutline size={30} />
-                    <span className='ml-4 text-xl'>Usuarios</span>
-                </Link>
+                        <>
+                            <div className='w-full h-px bg-gray-200 my-10' /><Link
+                                href="/products"
+                                className='flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all'
+                            >
+                                <IoShirtOutline size={30} />
+                                <span className='ml-4 text-xl'>Productos</span>
+                            </Link><Link
+                                href="/orders"
+                                className='flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all'
+                            >
+                                <IoTicketOutline size={30} />
+                                <span className='ml-4 text-xl'>Ordenes</span>
+                            </Link><Link
+                                href="/users"
+                                className='flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all'
+                            >
+                                <IoPeopleOutline size={30} />
+                                <span className='ml-4 text-xl'>Usuarios</span>
+                            </Link>
+                        </>
+                    )
+                }
 
             </nav>
         </div>
