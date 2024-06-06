@@ -74,4 +74,5 @@ model User {
   password      String
   role          Role      @default(user)
   image         String?
+  active        Boolean   @default(true)
 }
