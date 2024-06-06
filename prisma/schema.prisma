@@ -76,3 +76,8 @@ model User {
   image         String?
   active        Boolean   @default(true)
 }
+
+model Country {
+  id   String @id
+  name String
+}
