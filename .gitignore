@@ -8,6 +8,7 @@
 
 #DB
 /postgres
+postgres
 
 # testing
 /coverage
