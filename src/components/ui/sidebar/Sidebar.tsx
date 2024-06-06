@@ -13,12 +13,20 @@ export const Sidebar = () => {
     const isSideMenuOpen = useUIStore(state => state.isSideMenuOpen);
     const closeMenu = useUIStore(state => state.closeSideMenu);
 
-    const {data: session} = useSession();
+    const { data: session } = useSession();
 
-    console.log(session);
+    const isAthenticated = !!session?.user;
 
+    console.log("Autenticado_", isAthenticated);
+    
+    //Fix para cerrar sesión
+    const cerrarSesion = () =>{
+        logout(); 
+        closeMenu(); 
+        window.location.replace("/");
+    }
     return (
-        <div className=''>
+        <div>
             {/* Back black*/}
             {
                 isSideMenuOpen && (
@@ -27,17 +35,15 @@ export const Sidebar = () => {
             }
 
             {/* Blur */}
-            {
-                isSideMenuOpen && (
-                    <div
-                        onClick={() => closeMenu()}
-                        className="fade-in fixed top-0 left-0 w-screen h-screen z-10 backdrop-filter backdrop-blur-sm" />
-                )
-            }
+            {isSideMenuOpen && (
+                <div
+                    onClick={closeMenu}
+                    className="fade-in fixed top-0 left-0 w-screen h-screen z-10 backdrop-filter backdrop-blur-sm"
+                />
+            )}
 
             {/* Sidemenu */}
             <nav
-                // todo: efecto de slide
                 className={
                     clsx(
                         "fixed p-5 right-0 top-0 w-[500px] h-screen bg-white z-20 shadow-2xl transform transition-all duration-300",
@@ -77,23 +83,30 @@ export const Sidebar = () => {
                     <IoTicketOutline size={30} />
                     <span className='ml-4 text-xl'>Ordenes</span>
                 </Link>
+                {
+                    isAthenticated && (
+                        <Link
+                        href="/"
+                            className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
+                            onClick={() => cerrarSesion()}
+                        >
+                            <IoLogOutOutline size={30} />
+                            <span className="ml-3 text-xl">Salir</span>
+                        </Link>
+                    )
+                }
+                {!isAthenticated && (
+                        <Link
+                            href="/auth/login"
+                            onClick={() => closeMenu()}
+                            className='flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all'
+                        >
+                            <IoLogInOutline size={30} />
+                            <span className='ml-4 text-xl'>Ingresar</span>
+                        </Link>
+                    )
+                }
 
-                <Link
-                    href="/auth/login"
-                    onClick={() => closeMenu()}
-                    className='flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all'
-                >
-                    <IoLogInOutline size={30} />
-                    <span className='ml-4 text-xl'>Ingresar</span>
-                </Link>
-
-                <button
-                    className="flex w-full items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
-                    onClick={() => {logout(); closeMenu();}}
-                >
-                    <IoLogOutOutline size={30} />
-                    <span className="ml-3 text-xl">Salir</span>
-                </button>
                 {/* Line separator */}
                 <div className='w-full h-px bg-gray-200 my-10' />
 
