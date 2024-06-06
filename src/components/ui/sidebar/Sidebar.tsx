@@ -18,10 +18,10 @@ export const Sidebar = () => {
     const isAthenticated = !!session?.user;
 
     const isAdmin = session?.user.role === "admin";
-
+    console.log("isAthenticated ", isAthenticated);
     //Fix para cerrar sesión
-    const cerrarSesion = () => {
-        logout();
+    const cerrarSesion = async() => {
+        await logout();
         closeMenu();
         window.location.replace("/");
     }
@@ -91,14 +91,13 @@ export const Sidebar = () => {
                 }
                 {
                     isAthenticated && (
-                        <Link
-                            href="/"
-                            className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
+                        <button
+                            className="flex w-full items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
                             onClick={() => cerrarSesion()}
                         >
                             <IoLogOutOutline size={30} />
                             <span className="ml-3 text-xl">Salir</span>
-                        </Link>
+                        </button>
                     )
                 }
                 {!isAthenticated && (
