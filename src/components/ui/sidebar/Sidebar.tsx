@@ -18,7 +18,7 @@ export const Sidebar = () => {
     const isAthenticated = !!session?.user;
 
     const isAdmin = session?.user.role === "admin";
-    console.log("isAthenticated ", isAthenticated);
+    //console.log("isAthenticated ", isAthenticated);
     //Fix para cerrar sesión
     const cerrarSesion = async() => {
         await logout();
