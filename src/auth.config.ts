@@ -13,14 +13,6 @@ const authRoutes = [
     '/admin/*'
 ];
 
-const adminRoutes = [
-    '/admin/orders',
-    '/admin/users',
-    '/admin/products',
-    '/admin/product/new',
-    '/admin/product/{id}'
-];
-
 const routesLoged = [
     '/auth/login'
 ];
@@ -33,7 +25,6 @@ export const authConfig: NextAuthConfig = {
     callbacks: {
         authorized({ auth, request: { nextUrl } }) {
             const isLoggedIn = !!auth?.user;
-            const isRouteAdmin = adminRoutes.includes(nextUrl.pathname);
             const isAuthRouted = authRoutes.includes(nextUrl.pathname);
 
             //console.log(isAuthRouted);
@@ -45,7 +36,7 @@ export const authConfig: NextAuthConfig = {
             if(isAuthRouted && !isLoggedIn) return false;
 
             //Lo sacamos si es ruta admin y no es su rol
-            if(isRouteAdmin && auth?.user.role!= 'admin') return false;
+            if(nextUrl.pathname.startsWith('/admin') && auth?.user.role!= 'admin') return false;
 
             return true;
         },
