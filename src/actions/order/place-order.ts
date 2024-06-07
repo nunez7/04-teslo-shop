@@ -62,12 +62,39 @@ export const placeOrder = async (productIds: ProductToOrder[], address: Address)
             // 1. Actualizar el stock de los productos
 
 
-            // 2. Crear la orden - Encabezado - Detalles
+            // 2. Crear la orden y detalles (Order, OrderItem)
+            const order = await tx.order.create({
+                data: {
+                    userId: userId,
+                    itemsInOrder: itemsInOrder,
+                    subTotal: subTotal,
+                    tax: tax,
+                    total: total,
+                    OrderItem: {
+                        createMany: {
+                            data: productIds.map((p) => ({
+                                quantity: p.quantity,
+                                size: p.size,
+                                productId: p.productId,
+                                price:
+                                    products.find((product) => product.id === p.productId)
+                                        ?.price ?? 0,
+                            })),
+                        },
+                    },
+                },
+            });
 
+            // Validar, si el price es cero, entonces, lanzar un error
+            if(order.total <=0 )throw new Error('El precio no debe ser 0');
 
             // 3. Crear la direccion de la orden
 
-
+            return {
+                updatedProducts: [],
+                order: order,
+                orderAddress: {},
+              };
         });
         return {
             ok: true,
