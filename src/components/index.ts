@@ -12,4 +12,7 @@ export * from './product/quantity-selector/QuantitySelector';
 export * from './product/slideshow/ProductSlideShow';
 export * from './product/slideshow/ProductMobileSlideShow';
 
-export * from './provider/Provider';
+export * from './providers/Providers';
+
+export * from './orders/OrderStatus';
+export * from './paypal/PayPalButton';
