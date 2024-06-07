@@ -86,16 +86,26 @@ export const placeOrder = async (productIds: ProductToOrder[], address: Address)
             });
 
             // Validar, si el price es cero, entonces, lanzar un error
-            if(order.total <=0 )throw new Error('El precio no debe ser 0');
+            if (order.total <= 0) throw new Error('El precio no debe ser 0');
 
             // 3. Crear la direccion de la orden
-
+            // Address, destructuramos country, porque no se llama asi, aunque se este mandando en el objeto
+            const { country, ...restAddress } = address;
+            const orderAddress = await tx.orderAddress.create({
+                data: {
+                    ...restAddress,
+                    countryId: country,
+                    orderId: order.id,
+                },
+            });
+            //retornamos los objetos de la transaccion
             return {
                 updatedProducts: [],
                 order: order,
-                orderAddress: {},
-              };
+                orderAddress: orderAddress,
+            };
         });
+        //Retornamos la orden completa
         return {
             ok: true,
             order: prismaTx.order,
