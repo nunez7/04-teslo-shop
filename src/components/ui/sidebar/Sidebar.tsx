@@ -4,6 +4,7 @@ import { logout } from '@/actions';
 import { useUIStore } from '@/store';
 import clsx from 'clsx';
 import { useSession } from 'next-auth/react';
+import { revalidatePath } from 'next/cache';
 import Link from 'next/link';
 import React from 'react';
 import { IoCloseOutline, IoLogInOutline, IoLogOutOutline, IoPeopleOutline, IoPersonOutline, IoSearchOutline, IoShirtOutline, IoTicketOutline } from 'react-icons/io5'
