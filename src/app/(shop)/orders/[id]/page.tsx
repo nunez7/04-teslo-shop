@@ -68,7 +68,7 @@ export default async function OrdersUniquePage({ params }: Props) {
                 />
 
                 <div>
-                  <p>{item.product.title}</p>
+                  <p>{item.product.title} ({item.size})</p>
                   <p>
                     ${item.price} x {item.quantity}
                   </p>
