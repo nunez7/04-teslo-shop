@@ -118,20 +118,26 @@ export const Sidebar = () => {
                     isAdmin && (
 
                         <>
-                            <div className='w-full h-px bg-gray-200 my-10' /><Link
-                                href="/products"
+                            <div className='w-full h-px bg-gray-200 my-10' />
+                            <Link
+                                href="/admin/products"
+                                onClick={() => closeMenu()}
                                 className='flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all'
                             >
                                 <IoShirtOutline size={30} />
                                 <span className='ml-4 text-xl'>Productos</span>
-                            </Link><Link
-                                href="/orders"
+                            </Link>
+                            <Link
+                                href="/admin/orders"
+                                onClick={() => closeMenu()}
                                 className='flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all'
                             >
                                 <IoTicketOutline size={30} />
                                 <span className='ml-4 text-xl'>Ordenes</span>
-                            </Link><Link
-                                href="/users"
+                            </Link>
+                            <Link
+                                href="/admin/users"
+                                onClick={() => closeMenu()}
                                 className='flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all'
                             >
                                 <IoPeopleOutline size={30} />
