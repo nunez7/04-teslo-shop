@@ -9,7 +9,12 @@ const authRoutes = [
     '/checkout/address',
     '/profile',
     '/orders',
-    '/orders/{id}'
+    '/orders/{id}',
+    '/admin/*'
+];
+
+const adminRoutes = [
+    '/admin/orders'
 ];
 
 const routesLoged = [
@@ -24,23 +29,20 @@ export const authConfig: NextAuthConfig = {
     callbacks: {
         authorized({ auth, request: { nextUrl } }) {
             const isLoggedIn = !!auth?.user;
-            //const isOnDashboard = nextUrl.pathname.startsWith(nextUrl.pathname);
+            const isRouteAdmin = adminRoutes.includes(nextUrl.pathname);
             const isAuthRouted = authRoutes.includes(nextUrl.pathname);
 
             //console.log(isAuthRouted);
-
+            //Redirigimos a path / si ya esta logeado y va al login
             if(isLoggedIn && routesLoged.includes(nextUrl.pathname)){
                 return Response.redirect(new URL('/', nextUrl));
             }
-
+            //Lo sacamos si va a un sitio  que ocupa logeo y no esta logeado
             if(isAuthRouted && !isLoggedIn) return false;
 
-            /*if (isOnDashboard) {
-                if (isLoggedIn) return true;
-                return false; // Redirect unauthenticated users to login page
-            } else if (isLoggedIn) {
-                return Response.redirect(new URL('/checkout', nextUrl));
-            }*/
+            //Lo sacamos si es ruta admin y no es su rol
+            if(isRouteAdmin && auth?.user.role!= 'admin') return false;
+
             return true;
         },
         jwt({ token, user }) {
