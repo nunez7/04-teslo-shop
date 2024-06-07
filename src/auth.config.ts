@@ -14,7 +14,9 @@ const authRoutes = [
 ];
 
 const adminRoutes = [
-    '/admin/orders'
+    '/admin/orders',
+    '/admin/users',
+    '/admin/products'
 ];
 
 const routesLoged = [
