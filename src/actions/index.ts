@@ -18,3 +18,4 @@ export * from './order/get-order-by-user';
 
 
 export * from './payments/set-transaction-id';
+export * from './paypal/check-payment';

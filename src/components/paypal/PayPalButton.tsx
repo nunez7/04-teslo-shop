@@ -2,8 +2,8 @@
 
 import React from 'react';
 import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
-import { CreateOrderActions, CreateOrderData } from '@paypal/paypal-js';
-import { setTransactionId } from '@/actions';
+import { CreateOrderActions, CreateOrderData, OnApproveData, OnApproveActions } from '@paypal/paypal-js';
+import { paypalCheckPayment, setTransactionId } from '@/actions';
 
 interface Props {
     orderId: string;
@@ -25,6 +25,7 @@ export const PayPalButton = ({ orderId, amount }: Props) => {
         )
     }
 
+    //Registra la orden y el pago, regresa un transactionId
     const createOrder = async (data: CreateOrderData, actions: CreateOrderActions): Promise<string> => {
         const transactionId = await actions.order.create({
             purchase_units: [
@@ -43,9 +44,19 @@ export const PayPalButton = ({ orderId, amount }: Props) => {
         return transactionId;
     }
 
+    //Para verificar la aprobacion, es doble check del transactionId
+    const onApprove = async (data: OnApproveData, actions: OnApproveActions): Promise<void> => {
+        const details = await actions.order?.capture();
+        if (!details) return;
+
+        //Verificamos el pago a partir del detalle que regresa paypal
+        await paypalCheckPayment(details.id);
+    }
+
     return (
         <PayPalButtons
             createOrder={createOrder}
+            onApprove={onApprove}
         />
     )
 }
