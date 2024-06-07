@@ -59,8 +59,35 @@ export const placeOrder = async (productIds: ProductToOrder[], address: Address)
     // Crear la transacción de base de datos
     try {
         const prismaTx = await prisma.$transaction(async (tx) => {
-            // 1. Actualizar el stock de los productos
+            // 1. Actualizar el stock de los productos en un ciclo mediante un map
+            const updatedProductsPromises = products.map(async (product) => {
+                //  Acumular los valores cuando el product sea el mismo, debido a que estan agrupados los productos por id y no por talla
+                const productQuantity = productIds
+                    .filter((p) => p.productId === product.id)
+                    .reduce((acc, item) => item.quantity + acc, 0);
 
+                if (productQuantity === 0) {
+                    throw new Error(`${product.id} no tiene cantidad definida`);
+                }
+                //Actualizamos la cantidad del producto
+                return tx.product.update({
+                    where: { id: product.id },
+                    data: {
+                        // inStock: product.inStock - productQuantity // no hacer
+                        inStock: {
+                            decrement: productQuantity,
+                        },
+                    },
+                });
+            });
+            const updatedProducts = await Promise.all(updatedProductsPromises);
+
+            // Verificar valores negativos en las existencia = no hay stock
+            updatedProducts.forEach((product) => {
+                if (product.inStock < 0) {
+                    throw new Error(`${product.title} no tiene inventario suficiente`);
+                }
+            });
 
             // 2. Crear la orden y detalles (Order, OrderItem)
             const order = await tx.order.create({
