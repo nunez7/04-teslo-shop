@@ -1,30 +1,32 @@
 'use client';
 
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { placeOrder } from '@/actions';
 import { useAddressStore, useCartStore } from '@/store';
 import { currencyFormat } from '@/utils';
 import clsx from 'clsx';
-import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
 
 export const PlaceOrder = () => {
-
+    const router = useRouter();
     const [loaded, setLoaded] = useState(false);
     const [isPlacingOrder, setIsPlacingOrder] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
 
     const address = useAddressStore(state => state.address);
 
     //resumen de la compra
-    const {itemsInCart, subTotal, tax, total} = useCartStore(state => state.getSumaryInformation());
+    const { itemsInCart, subTotal, tax, total } = useCartStore(state => state.getSumaryInformation());
 
     //carrito de compras
     const cart = useCartStore(state => state.cart);
+    const clearCart = useCartStore( state => state.clearCart );
 
     useEffect(() => {
         setLoaded(true);
     }, []);
 
-    const onPlaceOrder = async() =>{
+    const onPlaceOrder = async () => {
         setIsPlacingOrder(true);
 
         const productsToOrder = cart.map(product => ({
@@ -33,10 +35,17 @@ export const PlaceOrder = () => {
             size: product.size
         }));
         console.log(productsToOrder);
-        //TODO: llamado a server action
-        await placeOrder(productsToOrder, address);
+        //Server action
+        const resp = await placeOrder(productsToOrder, address);
+        if (!resp.ok) {
+            setIsPlacingOrder(false);
+            setErrorMessage(resp.message);
+            return;
+        }
 
-        setIsPlacingOrder(false);
+        //* Todo salio bien!
+        clearCart();
+        router.replace('/orders/' + resp.order?.id);
     }
 
     if (!loaded) {
@@ -82,13 +91,13 @@ export const PlaceOrder = () => {
                     </span>
                 </p>
 
-                {/*<p className='text-red-500'>Error de creación de orden</p> */}
+                <p className="text-red-500">{ errorMessage }</p>
                 <button
                     //href="/orders/123"
                     onClick={onPlaceOrder}
                     className={
                         clsx({
-                            'btn-primary w-full flex justify-center' : !isPlacingOrder,
+                            'btn-primary w-full flex justify-center': !isPlacingOrder,
                             'btn-disabled w-full flex justify-center': isPlacingOrder
                         })
                     }

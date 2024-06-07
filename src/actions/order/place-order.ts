@@ -127,7 +127,7 @@ export const placeOrder = async (productIds: ProductToOrder[], address: Address)
             });
             //retornamos los objetos de la transaccion
             return {
-                updatedProducts: [],
+                updatedProducts: updatedProducts,
                 order: order,
                 orderAddress: orderAddress,
             };

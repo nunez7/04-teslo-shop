@@ -8,7 +8,8 @@ const authRoutes = [
     '/checkout',
     '/checkout/address',
     '/profile',
-    '/orders'
+    '/orders',
+    '/orders/{id}'
 ];
 
 const routesLoged = [
