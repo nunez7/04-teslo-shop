@@ -2,6 +2,7 @@
 import React from 'react';
 import { FreeMode, Autoplay, Pagination } from 'swiper/modules';
 
+import { ProductImage } from "@/components";
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 // Import Swiper styles
@@ -46,6 +47,19 @@ export const ProducMobiletSlideShow = ({ images, title, className }: Props) => {
                             />
                         </SwiperSlide>
                     ))
+                }
+                 {
+                    images.length == 0 && (
+                        <SwiperSlide>
+                        <ProductImage
+                            width={300}
+                            height={300}
+                            src={'placeholder.jpg'}
+                            alt={title}
+                            className='rounded-lg object-fill'
+                        />
+                    </SwiperSlide>
+                    )
                 }
             </Swiper>
         </div>

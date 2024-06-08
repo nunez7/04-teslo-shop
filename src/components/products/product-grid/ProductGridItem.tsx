@@ -13,9 +13,8 @@ interface Props {
 
 
 export const ProductGridItem = ( { product }: Props ) => {
-
-  const [ displayImage, setDisplayImage ] = useState( product.images[ 0 ] );
-
+  const imagenRecibida =  product.images[ 0 ]== undefined ? 'placeholder.jpg':  product.images[ 0 ];
+  const [ displayImage, setDisplayImage ] = useState(imagenRecibida);
 
   return (
     <div className="rounded-md overflow-hidden fade-in">

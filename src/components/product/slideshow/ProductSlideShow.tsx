@@ -1,7 +1,8 @@
 'use client';
 import React, { useState } from 'react';
 import { Swiper as SwiperObject } from 'swiper';
-import { Navigation, Pagination, Scrollbar, A11y, FreeMode, Thumbs, Autoplay } from 'swiper/modules';
+import { ProductImage } from "@/components";
+import { Navigation,  A11y, FreeMode, Thumbs, Autoplay } from 'swiper/modules';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -12,7 +13,6 @@ import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
 
 import './slideshow.css';
-import Image from 'next/image';
 
 interface Props {
     images: string[];
@@ -46,15 +46,28 @@ export const ProductSlideShow = ({ images, title, className }: Props) => {
                 {
                     images.map(image => (
                         <SwiperSlide key={image}>
-                            <Image
+                            <ProductImage
                                 width={1024}
                                 height={800}
-                                src={`/products/${image}`}
+                                src={image}
                                 alt={title}
                                 className='rounded-lg object-fill'
                             />
                         </SwiperSlide>
                     ))
+                }
+                {
+                    images.length == 0 && (
+                        <SwiperSlide>
+                        <ProductImage
+                            width={300}
+                            height={300}
+                            src={'placeholder.jpg'}
+                            alt={title}
+                            className='rounded-lg object-fill'
+                        />
+                    </SwiperSlide>
+                    )
                 }
             </Swiper>
             <Swiper
@@ -69,10 +82,10 @@ export const ProductSlideShow = ({ images, title, className }: Props) => {
                 {
                     images.map(image => (
                         <SwiperSlide key={image}>
-                            <Image
+                            <ProductImage
                                 width={300}
                                 height={300}
-                                src={`/products/${image}`}
+                                src={image}
                                 alt={title}
                                 className='rounded-lg object-fill'
                             />
