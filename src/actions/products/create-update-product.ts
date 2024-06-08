@@ -8,7 +8,7 @@ import { v2 as cloudinary } from 'cloudinary';
 cloudinary.config(process.env.CLOUDINARY_URL ?? '');
 
 
-
+//Esquema de validacion de datos con zod
 const productSchema = z.object({
     id: z.string().uuid().optional().nullable(),
     title: z.string().min(3).max(255),
@@ -32,22 +32,24 @@ const productSchema = z.object({
 
 
 export const createUpdateProduct = async (formData: FormData) => {
-
+    //Obtenemos la data
     const data = Object.fromEntries(formData);
+    //Validamos los datos con el squema
     const productParsed = productSchema.safeParse(data);
 
     if (!productParsed.success) {
         console.log(productParsed.error);
         return { ok: false }
     }
-
+    
     const product = productParsed.data;
     product.slug = product.slug.toLowerCase().replace(/ /g, '-').trim();
 
-
+    //destructuramos el id del resto de los datos
     const { id, ...rest } = product;
 
     try {
+        //Utilizamos transacion para actualizar la data o insertar
         const prismaTx = await prisma.$transaction(async (tx) => {
 
             let product: Product;
@@ -102,9 +104,6 @@ export const createUpdateProduct = async (formData: FormData) => {
 
             }
 
-
-
-
             return {
                 product
             }
@@ -134,7 +133,7 @@ export const createUpdateProduct = async (formData: FormData) => {
 }
 
 
-
+//Metodo para subir las imagenes en base64
 const uploadImages = async (images: File[]) => {
 
     try {
