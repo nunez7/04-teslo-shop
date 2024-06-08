@@ -14,13 +14,14 @@ interface Props {
 
 export const ProductGridItem = ( { product }: Props ) => {
   const imagenRecibida =  product.images[ 0 ]== undefined ? 'placeholder.jpg':  product.images[ 0 ];
-  const [ displayImage, setDisplayImage ] = useState(imagenRecibida);
+  const imagenSrc = imagenRecibida.startsWith('https') ? imagenRecibida  : `/products/${ imagenRecibida }`;
+  const [ displayImage, setDisplayImage ] = useState(imagenSrc);
 
   return (
     <div className="rounded-md overflow-hidden fade-in">
       <Link href={ `/product/${ product.slug }` }>
         <Image
-          src={ `/products/${ displayImage }` }
+          src={ displayImage }
           alt={ product.title }
           className="w-full object-cover rounded"
           width={ 500 }
