@@ -11,7 +11,13 @@
 8. Correr el proyecto ```npm run dev```
 
 
-## Correr en prod
+## Deploy en Versel: https://vercel.com/
+1. Crear cuenta en versel
+2. Crear la DB en versel
+3. Modificar el archivo .env con la conexión a DB de versel
+4. Subir los cambios a rama master ó main
+5. Subir la estructura de la DB ```npx prisma migrate deploy```
+6. Subir la data ```npm run seed```
 
 ## Comandos de prisma
 https://www.prisma.io/docs/getting-started
@@ -20,4 +26,5 @@ npm install prisma --save-dev
 npx prisma init --datasource-provider PostgreSQL
 npx prisma migrate dev --name init
 npx prisma generate
+npx prisma migrate deploy
 ```
